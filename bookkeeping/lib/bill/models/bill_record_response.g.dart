@@ -28,6 +28,8 @@ Map<String, dynamic> _$BillRecordResponseToJson(BillRecordResponse instance) =>
 BillRecordModel _$BillRecordModelFromJson(Map<String, dynamic> json) {
   return BillRecordModel(
     json['id'] as int,
+    json['currency'] as String,
+    (json['originMoney'] as num)?.toDouble(),
     (json['money'] as num)?.toDouble(),
     json['remark'] as String,
     json['type'] as int,
@@ -45,6 +47,8 @@ BillRecordModel _$BillRecordModelFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$BillRecordModelToJson(BillRecordModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'currency': instance.currency,
+      'originMoney': instance.originMoney,
       'money': instance.money,
       'remark': instance.remark,
       'categoryName': instance.categoryName,

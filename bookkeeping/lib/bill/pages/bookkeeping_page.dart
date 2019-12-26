@@ -5,8 +5,10 @@ import 'package:bookkeeping/db/db_helper.dart';
 import 'package:bookkeeping/res/colours.dart';
 import 'package:bookkeeping/res/styles.dart';
 import 'package:bookkeeping/routers/fluro_navigator.dart';
+import 'package:bookkeeping/util/file_cache.dart';
 import 'package:bookkeeping/util/utils.dart';
 import 'package:bookkeeping/widgets/app_bar.dart';
+import 'package:bookkeeping/widgets/currency_dropdown.dart';
 import 'package:bookkeeping/widgets/highlight_well.dart';
 import 'package:bookkeeping/widgets/input_textview_dialog.dart';
 import 'package:bookkeeping/widgets/number_keyboard.dart';
@@ -32,6 +34,7 @@ class _BookkeeppingState extends State<Bookkeepping>
   String _dateString = '';
   String _numberString = '';
   bool _isAdd = false;
+  String _currency = 'CNY';
 
   /// 支出类别数组
   List<CategoryItem> _expenObjects = List();
@@ -105,12 +108,17 @@ class _BookkeeppingState extends State<Bookkeepping>
             '${_time.month.toString().padLeft(2, '0')}-${_time.day.toString().padLeft(2, '0')} ${_time.hour.toString().padLeft(2, '0')}:${_time.minute.toString().padLeft(2, '0')}';
       }
 
+      if (widget.recordModel.currency.isNotEmpty) {
+        _currency = widget.recordModel.currency;
+      }
+
       if (widget.recordModel.remark.isNotEmpty) {
         _remark = widget.recordModel.remark;
       }
 
       if (widget.recordModel.money != null) {
-        _numberString = Utils.formatDouble(double.parse(_numberString = widget.recordModel.money.toStringAsFixed(2)));
+        _numberString = Utils.formatDouble(double.parse(
+            _numberString = widget.recordModel.money.toStringAsFixed(2)));
       }
 
       if (widget.recordModel.type == 2) {
@@ -299,8 +307,20 @@ class _BookkeeppingState extends State<Bookkeepping>
                   ),
                 ),
               ),
-              Expanded(
-                flex: 1,
+              Expanded(flex: 1, child: Container()),
+              Container(
+                child: CurrencyDropDown(
+                  currencyValue: _currency,
+                  onChanged: (val, symbol) {
+                    setState(() {
+                      _currency = val;
+                    });
+                  },
+                ),
+                margin: EdgeInsets.only(right: 20),
+              ),
+              Container(
+//                flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.only(right: 4),
                   child: Text(
@@ -355,17 +375,17 @@ class _BookkeeppingState extends State<Bookkeepping>
               });
             },
             //继续
-            nextCallback: () {
+            nextCallback: () async {
               if (_isAdd == true) {
                 _addNumber();
               }
-              _record();
+              await _record();
               _clearZero();
               setState(() {});
             },
             // 保存
-            saveCallback: () {
-              _record();
+            saveCallback: () async {
+              await _record();
               NavigatorUtils.goBack(context);
             },
           ),
@@ -395,7 +415,7 @@ class _BookkeeppingState extends State<Bookkeepping>
   }
 
   /// 记账保存
-  void _record() {
+  Future<void> _record() async {
     if (_numberString.isEmpty || _numberString == '0.') {
       return;
     }
@@ -408,9 +428,13 @@ class _BookkeeppingState extends State<Bookkeepping>
       item = _inComeObjects[_selectedIndexRight];
     }
 
+    double originMoney = double.parse(_numberString);
+
     BillRecordModel model = BillRecordModel(
         widget.recordModel != null ? widget.recordModel.id : null,
-        double.parse(_numberString),
+        _currency,
+        originMoney,
+        await _convertCurrency(_currency, originMoney),
         _remark,
         _tabController.index + 1,
         item.name,
@@ -425,6 +449,15 @@ class _BookkeeppingState extends State<Bookkeepping>
     dbHelp.insertBillRecord(model).then((value) {
       bus.trigger(bus.bookkeepingEventName);
     });
+  }
+
+  Future<double> _convertCurrency(String currency, double originMoney) async {
+    FileCache fileCache = await FileCache.fromDefault();
+    Map data = await fileCache.getJson('http://ali.zacharyjia.me:5001',
+        forceCache: 3600);
+    print(data);
+    return originMoney / data[currency];
+    return originMoney * 7;
   }
 
   /// 清零

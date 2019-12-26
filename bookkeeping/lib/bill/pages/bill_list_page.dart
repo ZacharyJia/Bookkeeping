@@ -408,7 +408,7 @@ class _BillState extends State<Bill>
                         Expanded(
                           flex: 1,
                           child: Text(
-                            '${Utils.formatDouble(model.money)}',
+                            model.getCurrencyMoneyString(),
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.right,
                             maxLines: 1,
@@ -615,11 +615,13 @@ class _BillState extends State<Bill>
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   child: Row(
                     children: <Widget>[
-                      Text('金额', style: titleStyle),
+                      Text('记账金额', style: titleStyle),
                       Gaps.hGap(20),
                       Expanded(
                         flex: 1,
-                        child: Text('${Utils.formatDouble(model.money)}',
+                        child: Text(
+                            '${Utils.getCurrencyString(model.currency)} '
+                            '${Utils.formatDouble(model.originMoney)}',
                             textAlign: TextAlign.right,
                             style: TextStyle(
                               fontSize: 20,
@@ -629,6 +631,29 @@ class _BillState extends State<Bill>
                     ],
                   ),
                 ),
+                Gaps.line,
+                model.currency != "CNY"
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Row(
+                          children: <Widget>[
+                            Text('换算金额', style: titleStyle),
+                            Gaps.hGap(20),
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                  '${Utils.getCurrencyString("CNY")} '
+                                  '${Utils.formatDouble(model.money)}',
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                            )
+                          ],
+                        ),
+                      )
+                    : Gaps.empty,
                 Gaps.line,
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),

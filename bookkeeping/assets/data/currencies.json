@@ -1,0 +1,8 @@
+[
+  {"cc":"AUD","symbol":"$","name":"澳元"},
+  {"cc":"CNY","symbol":"\u00a5","name":"人民币"},
+  {"cc":"EUR","symbol":"\u20ac","name":"欧元"},
+  {"cc":"GBP","symbol":"\u00a3","name":"英镑"},
+  {"cc":"JPY","symbol":"\u00a5","name":"日元"},
+  {"cc":"USD","symbol":"$","name":"美元"}
+]

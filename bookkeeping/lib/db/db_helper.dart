@@ -59,6 +59,8 @@ class Dbhelper {
     String queryBill = """
     CREATE TABLE $_billTableName(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      currency TEXT NOT NULL,
+      originMoney REAL NOT NULL,
       money REAL NOT NULL,
       remark TEXT,
       categoryName TEXT NOT NULL,
@@ -175,6 +177,8 @@ class Dbhelper {
             .toString();
     //这里不要使用Map 声明map
     var map = {
+      'currency': model.currency,
+      'originMoney': model.originMoney,
       'money': model.money,
       'remark': model.remark,
       'type': model.type,

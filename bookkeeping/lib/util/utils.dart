@@ -27,7 +27,7 @@ class Utils {
   }
 
   static String formatDouble(double toFormat) {
-    return (toFormat * 10) % 10 != 0 ? "$toFormat" : "${toFormat.toInt()}";
+    return (toFormat * 10) % 10 != 0 ? "${toFormat.toStringAsFixed(2)}" : "${toFormat.toInt()}";
   }
 
   static Future<List<String>> loadCategoryIcons() async {
@@ -44,4 +44,9 @@ class Utils {
     });
     return icons;
   }
+
+  static String getCurrencyString(String value) {
+    return value;
+  }
+
 }

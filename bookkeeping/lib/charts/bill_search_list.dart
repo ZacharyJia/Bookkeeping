@@ -1,4 +1,3 @@
-
 import 'package:bookkeeping/bill/models/bill_record_group.dart';
 import 'package:bookkeeping/bill/models/bill_record_response.dart';
 import 'package:bookkeeping/bill/pages/bookkeeping_page.dart';
@@ -213,7 +212,7 @@ class BillSearchListState extends State<BillSearchList> {
                         Expanded(
                           flex: 1,
                           child: Text(
-                            '${Utils.formatDouble(model.money)}',
+                            model.getCurrencyMoneyString(),
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.right,
                             maxLines: 1,
@@ -426,11 +425,13 @@ class BillSearchListState extends State<BillSearchList> {
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   child: Row(
                     children: <Widget>[
-                      Text('金额', style: titleStyle),
+                      Text('记账金额', style: titleStyle),
                       Gaps.hGap(20),
                       Expanded(
                         flex: 1,
-                        child: Text('${Utils.formatDouble(model.money)}',
+                        child: Text(
+                            '${Utils.getCurrencyString(model.currency)} '
+                            '${Utils.formatDouble(model.originMoney)}',
                             textAlign: TextAlign.right,
                             style: TextStyle(
                               fontSize: 20,
@@ -440,6 +441,29 @@ class BillSearchListState extends State<BillSearchList> {
                     ],
                   ),
                 ),
+                Gaps.line,
+                model.currency != "CNY"
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Row(
+                          children: <Widget>[
+                            Text('换算金额', style: titleStyle),
+                            Gaps.hGap(20),
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                  '${Utils.getCurrencyString("CNY")} '
+                                  '${Utils.formatDouble(model.money)}',
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  )),
+                            )
+                          ],
+                        ),
+                      )
+                    : Gaps.empty,
                 Gaps.line,
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),

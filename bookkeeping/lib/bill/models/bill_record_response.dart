@@ -1,3 +1,4 @@
+import 'package:bookkeeping/util/utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'bill_record_response.g.dart';
@@ -29,6 +30,12 @@ class BillRecordResponse extends Object {
 class BillRecordModel extends Object {
   @JsonKey(name: 'id')
   int id;
+
+  @JsonKey(name: 'currency')
+  String currency;
+
+  @JsonKey(name: 'originMoney')
+  double originMoney;
 
   @JsonKey(name: 'money')
   double money;
@@ -68,6 +75,8 @@ class BillRecordModel extends Object {
 
   BillRecordModel(
     this.id,
+    this.currency,
+    this.originMoney,
     this.money,
     this.remark,
     this.type,
@@ -83,4 +92,12 @@ class BillRecordModel extends Object {
       _$BillRecordModelFromJson(srcJson);
 
   Map<String, dynamic> toJson() => _$BillRecordModelToJson(this);
+
+  String getCurrencyMoneyString() {
+    var str = '${Utils.getCurrencyString(this.currency)} ${Utils.formatDouble(this.originMoney)}';
+    if (this.currency != 'CNY') {
+      str += '(${Utils.getCurrencyString("CNY")} ${Utils.formatDouble(this.money)})';
+    }
+    return str;
+  }
 }

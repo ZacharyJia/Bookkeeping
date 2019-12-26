@@ -54,6 +54,9 @@ dependencies:
   charts_flutter: ^0.8.1
   # https://pub.dev/packages/intl
   intl: ^0.15.2
+  # 文件缓存 https://pub.dev/packages/file_cache
+  # 引入会有问题，直接把源代码复制到文件中了
+  # file_cache: ^0.1.2
 
 dev_dependencies:
   # Your other dev_dependencies here
