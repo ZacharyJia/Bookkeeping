@@ -1,7 +1,9 @@
 import 'package:bookkeeping/bill/pages/bill_list_page.dart';
 import 'package:bookkeeping/bill/pages/bill_router.dart';
 import 'package:bookkeeping/charts/charts_page.dart';
+import 'package:bookkeeping/personCenter/person_page.dart';
 import 'package:bookkeeping/res/colours.dart';
+import 'package:bookkeeping/settings/settings_page.dart';
 import 'package:bookkeeping/util/fluro_navigator.dart';
 import 'package:bookkeeping/widgets/highlight_well.dart';
 import 'package:fluro/fluro.dart';
@@ -21,7 +23,7 @@ class _MainPageState extends State<MainPage> {
 
   final _pageController = PageController();
 
-  final _pages = [Bill(), Charts()];
+  final _pages = [Bill(), Charts(), Person(), Setting()];
 
   DateTime _lastTime;
   Future<bool> _isExit() {
@@ -52,10 +54,10 @@ class _MainPageState extends State<MainPage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 _buildBottomItem(0, '账单', Icons.description),
-                _buildBottomItem(-1, '记账', null),
                 _buildBottomItem(1, '统计', Icons.pie_chart),
-                // _buildBottomItem(2, '账户', Icons.account_balance_wallet),
-                // _buildBottomItem(3, '我的', Icons.account_box),
+                _buildBottomItem(-1, '记账', null),
+                _buildBottomItem(2, '我的', Icons.account_box),
+                _buildBottomItem(3, '设置', Icons.settings),
               ],
             ),
           ),

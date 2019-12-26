@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
       backgroundColor: Colors.black54,
       textPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       radius: 20,
-      position: ToastPosition.bottom,
+      position: ToastPosition(align: Alignment.bottomCenter, offset: -50.0),
     );
   }
 }

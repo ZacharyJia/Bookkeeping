@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 class Utils {
@@ -25,5 +28,20 @@ class Utils {
 
   static String formatDouble(double toFormat) {
     return (toFormat * 10) % 10 != 0 ? "$toFormat" : "${toFormat.toInt()}";
+  }
+
+  static Future<List<String>> loadCategoryIcons() async {
+    var json = await rootBundle.loadString('assets/data/category.json');
+    List list = jsonDecode(json);
+    List<String> icons = new List<String>();
+    list.forEach((value) {
+      var items = value["items"];
+      if (items != null && items is List) {
+        items.forEach((item) {
+          icons.add(item["image"]);
+        });
+      }
+    });
+    return icons;
   }
 }

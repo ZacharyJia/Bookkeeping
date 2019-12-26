@@ -27,6 +27,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       this.onPressed,
       this.isBack: true,
       this.leading,
+      this.trailing,
       this.barStyle: StatusBarStyle.dark})
       : super(key: key);
 
@@ -39,6 +40,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback onPressed;
   final bool isBack;
   final Widget leading;
+  final Widget trailing;
   final StatusBarStyle barStyle;
 
   @override
@@ -123,16 +125,19 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     minWidth: 60.0,
                   )),
-                  child: actionName.isEmpty
-                      ? Container()
-                      : FlatButton(
-                          child: Text(actionName),
-                          textColor: _overlayStyle == SystemUiOverlayStyle.light
-                              ? Colors.white
-                              : Colours.dark,
-                          highlightColor: Colors.transparent,
-                          onPressed: onPressed,
-                        ),
+                  child: trailing != null
+                      ? trailing
+                      : actionName.isEmpty
+                          ? Container()
+                          : FlatButton(
+                              child: Text(actionName),
+                              textColor:
+                                  _overlayStyle == SystemUiOverlayStyle.light
+                                      ? Colors.white
+                                      : Colours.dark,
+                              highlightColor: Colors.transparent,
+                              onPressed: onPressed,
+                            ),
                 ),
               ),
             ],

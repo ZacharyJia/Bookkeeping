@@ -1,5 +1,7 @@
 import 'package:bookkeeping/bill/pages/bill_router.dart';
+import 'package:bookkeeping/personCenter/person_router.dart';
 import 'package:bookkeeping/routers/router_init.dart';
+import 'package:bookkeeping/settings/settings_router.dart';
 import 'package:bookkeeping/widgets/404.dart';
 import 'package:bookkeeping/widgets/webview_page.dart';
 import 'package:fluro/fluro.dart';
@@ -26,6 +28,8 @@ class Routes {
     /// 各自路由由各自模块管理，统一在此初始化
     _listRouter.clear();
     _listRouter.add(BillRouter());
+    _listRouter.add(SettingsRouter());
+    _listRouter.add(PersonRouter());
     
     /// 初始化路由
     _listRouter.forEach((routerProvider) {

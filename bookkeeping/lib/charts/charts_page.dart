@@ -199,17 +199,22 @@ class ChartState extends State<StatefulWidget>
                     // color: Colors.red,
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.width * 0.4,
-                    child: OverflowBox(
-                        minWidth: MediaQuery.of(context).size.width,
-                        child: charts.PieChart(
-                            _type == 1 ? _expendChartDatas : _incomeChartDatas,
-                            animate: true,
-                            defaultRenderer: charts.ArcRendererConfig(
-                                arcRendererDecorators: [
-                                  charts.ArcLabelDecorator(
-                                    labelPosition: charts.ArcLabelPosition.auto,
-                                  ),
-                                ]))),
+                    child: _datas.length == 0
+                        ? Container()
+                        : OverflowBox(
+                            minWidth: MediaQuery.of(context).size.width,
+                            child: charts.PieChart(
+                                _type == 1
+                                    ? _expendChartDatas
+                                    : _incomeChartDatas,
+                                animate: true,
+                                defaultRenderer: charts.ArcRendererConfig(
+                                    arcRendererDecorators: [
+                                      charts.ArcLabelDecorator(
+                                        labelPosition:
+                                            charts.ArcLabelPosition.auto,
+                                      ),
+                                    ]))),
                   ),
                 ]);
               }, childCount: 1),

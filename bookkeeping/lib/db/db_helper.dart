@@ -4,6 +4,7 @@ import 'package:bookkeeping/bill/models/bill_record_group.dart';
 import 'package:bookkeeping/bill/models/bill_record_response.dart';
 import 'package:bookkeeping/bill/models/budget_model.dart';
 import 'package:bookkeeping/bill/models/category_model.dart';
+import 'package:bookkeeping/settings/category_editor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
@@ -137,6 +138,24 @@ class Dbhelper {
     var result = await dbClient
         .rawQuery('SELECT * FROM $_initialExpenCategory ORDER BY sort ASC');
     return result.toList();
+  }
+
+  /// 更新支出类别列表，重新按照顺序更新sort
+  Future<void> updateCategory(
+      List<CategoryItem> list, CategoryType type) async {
+    var dbClient = await db;
+    var table = type == CategoryType.expense
+        ? _initialExpenCategory
+        : _initialIncomeCategory;
+    dbClient.delete(table);
+    for (int i = 0; i < list.length; i++) {
+      list[i].sort = i;
+      if (type == CategoryType.expense) {
+        await dbClient.insert(table, list[i].toJson());
+      } else {
+        await dbClient.insert(table, list[i].toJson());
+      }
+    }
   }
 
   /// 获取记账收入类别列表
